@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """slurm-ops-manager utils."""
+import grp
 import os
 import pwd
 import re
