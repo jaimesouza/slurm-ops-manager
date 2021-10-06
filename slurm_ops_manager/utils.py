@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """slurm-ops-manager utils."""
 import os
+import pwd
 import re
 import socket
 import subprocess
@@ -14,6 +15,26 @@ OS_RELEASE_CTXT = {
     k: v.strip("\"")
     for k, v in [item.split("=") for item in OS_RELEASE if item != '']
 }
+
+
+def group_exists(groupname):
+    """Check if a group exists"""
+    try:
+        grp.getgrnam(groupname)
+        group_exists = True
+    except KeyError:
+        group_exists = False
+    return group_exists
+
+
+def user_exists(username):
+    """Check if a user exists"""
+    try:
+        pwd.getpwnam(username)
+        user_exists = True
+    except KeyError:
+        user_exists = False
+    return user_exists
 
 
 def operating_system():

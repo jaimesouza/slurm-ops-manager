@@ -6,6 +6,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 from slurm_ops_manager.slurm_ops_base import SlurmOpsManagerBase
+from slurm_ops_manager.utils import user_exists, group_exists
 
 
 logger = logging.getLogger()
@@ -76,14 +77,22 @@ class SlurmRpmManager(SlurmOpsManagerBase):
 
         # current rpms do not create a slurm user and group, so we create it
         logger.info("#### Creating slurm user and group")
-        #subprocess.check_output(["groupadd", "--gid", self._slurm_group_id,
-        #                                     self._slurm_group])
-        #subprocess.check_output(["adduser", "--system",
-        #                                    "--gid", self._slurm_group_id,
-        #                                    "--uid", self._slurm_user_id,
-        #                                    "--no-create-home",
-        #                                    "--home", "/nonexistent",
-        #                                    self._slurm_user])
+        if not group_exists(self._slurm_group):
+            subprocess.check_output([
+                "groupadd",
+                "--gid", self._slurm_group_id,
+                self._slurm_group
+            ])
+        if not user_exists(self._slurm_user):
+            subprocess.check_output([
+                "adduser",
+                "--system",
+                "--gid", self._slurm_group_id,
+                "--uid", self._slurm_user_id,
+                "--no-create-home",
+                "--home", "/nonexistent",
+                self._slurm_user
+            ])
         logger.info("#### Created slurm user and group")
 
         # we need to override the default service unit for slurmrestd only
