@@ -358,7 +358,7 @@ class SlurmOpsManagerBase:
         # cleanup old installations
         if full_path.exists():
             rmtree(full_path)
-        base_path.mkdir()
+        full_path.mkdir()
 
         cmd = f"tar --extract --directory {base_path} --file {nhc_tar}".split()
         subprocess.run(cmd)
