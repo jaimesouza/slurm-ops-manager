@@ -369,7 +369,6 @@ class SlurmOpsManagerBase:
                 cmd = f"mv /tmp/nhc/* /tmp/nhc/nhc"
                 subprocess.run(cmd)
                 time.sleep(5)
-                break
             except Exception as e:
                 if x == timeout:
                     raise Exception("File Move Failed for NHC", e)
