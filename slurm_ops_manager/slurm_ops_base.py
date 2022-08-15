@@ -5,6 +5,7 @@ import os
 import shlex
 import shutil
 import subprocess
+import time
 from base64 import b64decode, b64encode
 from pathlib import Path
 from shutil import rmtree
@@ -362,8 +363,17 @@ class SlurmOpsManagerBase:
 
         cmd = f"tar --extract --directory {base_path} --file {nhc_tar}".split()
         subprocess.run(cmd)
-        cmd = f"mv /tmp/nhc/* /tmp/nhc/nhc"
-        subprocess.run(cmd)
+        timeout = 2
+        for x in range(0, timeout):
+            try:
+                cmd = f"mv /tmp/nhc/* /tmp/nhc/nhc"
+                subprocess.run(cmd)
+                time.sleep(5)
+                break
+            except Exception as e:
+                if x == timeout:
+                    raise Exception("File Move Failed for NHC", e)
+
 
         if operating_system() == 'ubuntu':
             libdir = "/usr/lib"
