@@ -347,17 +347,17 @@ class SlurmOpsManagerBase:
 
         Returns True on success, False otherwise.
         """
-        version = self.nhc_version
+        #version = self.nhc_version
+        #src = f"https://codeload.github.com/omnivector-solutions/nhc/tar.gz/refs/tags/{version}"
 
-        logger.info(f"#### installing NHC {version}")
+        logger.info(f"#### downloading and installing NHC")
 
         base_path = Path("/tmp/nhc")
-        full_path = base_path / "nhc"
+        full_path = base_path / f"nhc"
         nhc_tar = "/opt/nhc.tar.gz"
 
-        # cleanup old installations
-        if full_path.exists():
-            rmtree(full_path)
+        if base_path.exists():
+            rmtree(base_path)
         base_path.mkdir()
 
         cmd = f"tar --extract --directory {base_path} --file {nhc_tar}".split()
