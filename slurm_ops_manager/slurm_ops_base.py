@@ -351,14 +351,14 @@ class SlurmOpsManagerBase:
 
         logger.info(f"#### installing NHC {version}")
 
-        base_path = Path("/tmp/nhc-dir")
+        base_path = Path("/tmp/nhc")
         full_path = base_path / "nhc"
-        nhc_tar = "/tmp/nhc.tar.gz"
+        nhc_tar = "/opt/nhc.tar.gz"
 
         # cleanup old installations
         if full_path.exists():
             rmtree(full_path)
-        full_path.mkdir()
+        base_path.mkdir()
 
         cmd = f"tar --extract --directory {base_path} --file {nhc_tar}".split()
         subprocess.run(cmd)
