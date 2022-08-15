@@ -362,6 +362,8 @@ class SlurmOpsManagerBase:
 
         cmd = f"tar --extract --directory {base_path} --file {nhc_tar}".split()
         subprocess.run(cmd)
+        cmd = f"mv /tmp/nhc/* /tmp/nhc/nhc"
+        subprocess.run(cmd)
 
         if operating_system() == 'ubuntu':
             libdir = "/usr/lib"
