@@ -341,7 +341,7 @@ class SlurmOpsManagerBase:
     @property
     def nhc_version(self) -> str:
         """Return NHC version."""
-        return "1.4.2-omni-1.0"
+        return "lbnl-nhc-1.4.3"
 
     def _install_nhc_from_git(self) -> bool:
         """Install NHC from Omnivector fork.
@@ -354,7 +354,7 @@ class SlurmOpsManagerBase:
         logger.info(f"#### downloading and installing NHC")
 
         base_path = Path("/tmp/nhc")
-        full_path = base_path / f"nhc"
+        full_path = base_path / self.nhc_version
         nhc_tar = "/opt/nhc.tar.gz"
 
         if base_path.exists():
@@ -363,16 +363,6 @@ class SlurmOpsManagerBase:
 
         cmd = f"tar --extract --directory {base_path} --file {nhc_tar}".split()
         subprocess.run(cmd)
-        timeout = 2
-        for x in range(0, timeout):
-            try:
-                cmd = f"mv /tmp/nhc/* /tmp/nhc/nhc"
-                subprocess.run(cmd)
-                time.sleep(5)
-            except Exception as e:
-                if x == timeout:
-                    raise Exception("File Move Failed for NHC", e)
-
 
         if operating_system() == 'ubuntu':
             libdir = "/usr/lib"
